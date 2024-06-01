@@ -1,0 +1,19 @@
+{% if cliente %}
+   <p>{{cliente}}</p>
+   <p>Endereços:</p>
+   <ul>
+        {% for endereco in cliente.endereco_set.all %}
+             <li>{{endereco}}
+               <ul>
+                    {% for equipamento in endereco.equipamento_set.all %}
+                         <li>{{equipamento}}</li>
+                    {% endfor %}
+               </ul>
+             </li>
+        {% endfor %}
+   </ul>
+   <a href="{% url 'clientes:list' %}">Voltar</a>
+   <a href="{% url 'clientes:equipamento-form' cliente.id %}">Adicionar Equipamento</a>
+   {% comment %} <a href="{% url 'clientes:edit' cliente.id %}">Editar</a> {% endcomment %}
+{% endif %}
+

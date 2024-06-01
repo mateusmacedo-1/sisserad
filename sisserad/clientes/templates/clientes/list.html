@@ -1,0 +1,9 @@
+{% if latest_registered_clientes %}
+    <ul>
+    {% for cliente in latest_registered_clientes %}
+        <li><a href="{% url 'clientes:detail' cliente.id %}">{{ cliente.nome }}</a> registrado em: {{cliente.created_at}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Não há clientes disponíveis.</p>
+{% endif %}
