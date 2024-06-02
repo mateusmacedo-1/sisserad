@@ -14,6 +14,6 @@
    </ul>
    <a href="{% url 'clientes:list' %}">Voltar</a>
    <a href="{% url 'clientes:equipamento-form' cliente.id %}">Adicionar Equipamento</a>
-   {% comment %} <a href="{% url 'clientes:edit' cliente.id %}">Editar</a> {% endcomment %}
+   <a href="{% url 'clientes:endereco-form' cliente.id %}">Adicionar Endereço</a>
 {% endif %}
 
