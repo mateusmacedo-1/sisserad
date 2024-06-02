@@ -1,22 +1,20 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from clientes.models import Cliente
 from clientes.forms import EnderecoForm, EquipamentoForm
+from django.views import generic
 
 
-# Create your views here.
-def cliente_list(request):
-    latest_registered_clientes = Cliente.objects.order_by("-created_at")[:5]
-    context = {
-        "latest_registered_clientes": latest_registered_clientes,
-    }
-    return render(request, "clientes/list.html", context)
+class DetailView(generic.DetailView):
+    model = Cliente
+    template_name = "clientes/detail.html"
 
-def cliente_detail(request, cliente_id):
-    cliente = get_object_or_404(Cliente, pk=cliente_id)
-    context = {
-        "cliente": cliente,
-    }
-    return render(request, "clientes/detail.html", context)
+class ListView(generic.ListView):
+    model = Cliente
+    template_name = "clientes/list.html"
+    context_object_name = "latest_registered_clientes"
+    
+    def get_queryset(self):
+        return Cliente.objects.order_by("-created_at")[:5]
 
 def cliente_equipamento_form(request, cliente_id):
     cliente = get_object_or_404(Cliente, pk=cliente_id)
