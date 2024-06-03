@@ -42,3 +42,8 @@ class Endereco(BaseModel):
         
     def __str__(self):
         return f'{self.logradouro}, {self.numero} CEP:{self.cep}'
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['cliente', 'cep', 'numero'], name='unique address for cliente')
+        ]
