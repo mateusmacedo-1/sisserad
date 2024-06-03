@@ -19,12 +19,12 @@ class ListView(generic.ListView):
 def cliente_equipamento_form(request, cliente_id):
     cliente = get_object_or_404(Cliente, pk=cliente_id)
     if request.method == "POST":
-        form = EquipamentoForm(request.POST, cliente_id=cliente_id)
+        form = EquipamentoForm(request.POST, cliente=cliente)
         if form.is_valid():
             form.save()
-            return redirect("clientes:detail", cliente_id=cliente_id)
+            return redirect("clientes:detail", pk=cliente_id)
     else:
-        form = EquipamentoForm(cliente_id=cliente.id)
+        form = EquipamentoForm(cliente=cliente)
     return render(request, "clientes/equipamentos/form.html", {
         "cliente": cliente,
         "form": form,
@@ -33,12 +33,12 @@ def cliente_equipamento_form(request, cliente_id):
 def cliente_endereco_form(request, cliente_id):
     cliente = get_object_or_404(Cliente, pk=cliente_id)
     if request.method == "POST":
-        form = EnderecoForm(request.POST, cliente_id=cliente_id)
+        form = EnderecoForm(request.POST, cliente=cliente)
         if form.is_valid():
             form.save()
-            return redirect("clientes:detail", cliente_id=cliente_id)
+            return redirect("clientes:detail", pk=cliente_id)
     else:
-        form = EnderecoForm(cliente_id=cliente.id)
+        form = EnderecoForm(cliente=cliente)
     return render(request, "clientes/enderecos/form.html", {
         "cliente": cliente,
         "form": form,

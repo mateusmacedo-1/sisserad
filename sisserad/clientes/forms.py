@@ -27,9 +27,10 @@ class EnderecoForm(forms.ModelForm):
         model = Endereco
         fields = ['logradouro', 'numero', 'cep', 'cidade', 'estado']
     def __init__(self, *args, **kwargs):
-        cliente_id = kwargs.pop('cliente_id', None)
-        self.cliente = Cliente.objects.get(pk=cliente_id)
+        self.cliente = kwargs.pop('cliente', None)
         super(EnderecoForm, self).__init__(*args, **kwargs)
+
+        
     def save(self, commit=True):
         endereco = super(EnderecoForm, self).save(commit=False)
         if self.cliente:
