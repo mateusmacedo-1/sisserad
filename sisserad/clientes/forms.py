@@ -38,3 +38,8 @@ class EnderecoForm(forms.ModelForm):
         if commit:
             endereco.save()
         return endereco 
+    
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ["nome", "documento", "email", "telefone_fixo", "celular"]

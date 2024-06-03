@@ -1,4 +1,4 @@
-<form action="{% url 'clientes:equipamento-form' cliente.id %}" method="post">
+<form method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">

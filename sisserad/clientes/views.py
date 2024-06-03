@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from clientes.models import Cliente
-from clientes.forms import EnderecoForm, EquipamentoForm
+from clientes.forms import ClienteForm, EnderecoForm, EquipamentoForm
 from django.views import generic
 
 
@@ -12,9 +13,27 @@ class ListView(generic.ListView):
     model = Cliente
     template_name = "clientes/list.html"
     context_object_name = "latest_registered_clientes"
-    
     def get_queryset(self):
         return Cliente.objects.order_by("-created_at")[:5]
+
+class CreateView(generic.CreateView):
+    model = Cliente
+    form_class = ClienteForm
+    template_name = "clientes/form.html"
+    success_url = "clientes:list"
+    
+    def get_success_url(self):
+        return reverse("clientes:detail", args=(self.object.id,))
+    
+    
+class UpdateView(generic.UpdateView):
+    model = Cliente
+    form_class = ClienteForm
+    template_name = "clientes/form.html"
+
+    def get_success_url(self):
+        return reverse("clientes:detail", args=(self.object.id,))
+    
 
 def cliente_equipamento_form(request, cliente_id):
     cliente = get_object_or_404(Cliente, pk=cliente_id)
