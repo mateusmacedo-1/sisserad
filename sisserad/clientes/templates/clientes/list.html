@@ -1,7 +1,12 @@
+{% load static %}
+<img src="{% static 'clientes/images/seradlogo.png' %}" alt="Logo da empresa">
+<link rel="stylesheet" href="{% static 'clientes/style.css' %}">
+
+
 {% if latest_registered_clientes %}
     <ul>
     {% for cliente in latest_registered_clientes %}
-        <li><a href="{% url 'clientes:detail' cliente.id %}">{{ cliente.nome }}</a> registrado em: {{cliente.created_at}}</li>
+        <li class="cliente"><a href="{% url 'clientes:detail' cliente.id %}">{{ cliente.nome }}</a> registrado em: {{cliente.created_at}}</li>
         <a href="{% url 'clientes:editar' cliente.id %}">Editar cliente</a>
     {% endfor %}
     </ul>

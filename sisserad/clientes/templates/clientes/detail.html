@@ -41,7 +41,7 @@
           {% if cliente %}
           <p>{{cliente}}</p>
           <p>Endereços:</p>
-          <ul>
+          <ul class="cliente-list">
                {% for endereco in cliente.endereco_set.all %}
                     <li class="endereco-{{endereco.id}}">{{endereco}}
                       <a class="editar-endereco-{{endereco.id}}" href="{% url 'clientes:endereco-editar' pk=endereco.id cliente_id=endereco.cliente.id%}">Editar</a>

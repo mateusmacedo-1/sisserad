@@ -1,0 +1,16 @@
+.cliente a{
+    text-decoration: none;
+    color: black;
+}
+
+.cliente-list{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cliente:hover{
+    background-color: rgb(196, 196, 196);
+
+}
