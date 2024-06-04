@@ -1,19 +1,70 @@
-{% if cliente %}
-   <p>{{cliente}}</p>
-   <p>Endereços:</p>
-   <ul>
-        {% for endereco in cliente.endereco_set.all %}
-             <li>{{endereco}}
-               <ul>
-                    {% for equipamento in endereco.equipamento_set.all %}
-                         <li>{{equipamento}}</li>
-                    {% endfor %}
-               </ul>
-             </li>
-        {% endfor %}
-   </ul>
-   <a href="{% url 'clientes:list' %}">Voltar</a>
-   <a href="{% url 'clientes:equipamento-form' cliente.id %}">Adicionar Equipamento</a>
-   <a href="{% url 'clientes:endereco-form' cliente.id %}">Adicionar Endereço</a>
-{% endif %}
 
+
+<!DOCTYPE html>
+<html>
+     <head>
+          <style>
+               {% for endereco in cliente.endereco_set.all %}
+                    .editar-endereco-{{ endereco.id }} {
+                    display: none;
+                    }
+                    
+     
+                    .endereco-{{ endereco.id }}:hover .editar-endereco-{{ endereco.id }} {
+                         display: inline;
+                    }
+
+                    .equipamento-{{ equipamento.id }}:hover{
+                         background-color: #f0f0f1;
+                    }
+
+                    .endereco-{{ endereco.id }}:hover .equipamentos-endereco-{{ endereco.id }} {
+                         display: inline;
+                    }
+                    
+                    .endereco-{{ endereco.id }} {
+                         margin: 2em;
+                    }
+
+
+                    .endereco-{{ endereco.id }}:hover {
+                         background-color: #f0f0f0;
+                    }
+
+                    .equipamentos-endereco-{{ endereco.id }} {
+                         display: none;
+                    }
+               {% endfor %}
+          </style>
+     </head>
+     <body>
+          {% if cliente %}
+          <p>{{cliente}}</p>
+          <p>Endereços:</p>
+          <ul>
+               {% for endereco in cliente.endereco_set.all %}
+                    <li class="endereco-{{endereco.id}}">{{endereco}}
+                      <a class="editar-endereco-{{endereco.id}}" href="{% url 'clientes:endereco-editar' pk=endereco.id cliente_id=endereco.cliente.id%}">Editar</a>
+                      <div class="equipamentos-endereco-{{endereco.id}}">
+                         <p>Equipamentos:</p>
+                         <ul>
+                              {% if not endereco.equipamento_set.all %}
+                                   <li>Nenhum equipamento cadastrado nesse endereço.</li>
+                              {% endif %}
+                              {% for equipamento in endereco.equipamento_set.all %}
+                                   <li class="equipamento-{{equipamento.id}}">
+                                        {{equipamento}}
+                                        <a href="{% url 'clientes:equipamento-editar' pk=equipamento.id cliente_id=endereco.cliente.id%}">Editar</a>
+                                   </li>
+                              {% endfor %}
+                         </ul>
+                      </div>
+                    </li>
+               {% endfor %}
+          </ul>
+          <a href="{% url 'clientes:list' %}">Voltar</a>
+          <a href="{% url 'clientes:equipamento-form' cliente.id %}">Adicionar Equipamento</a>
+          <a href="{% url 'clientes:endereco-form' cliente.id %}">Adicionar Endereço</a>
+       {% endif %}
+     </body>
+</html>

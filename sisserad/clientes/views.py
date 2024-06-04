@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from clientes.models import Cliente
+from clientes.models import Cliente, Endereco, Equipamento
 from clientes.forms import ClienteForm, EnderecoForm, EquipamentoForm
 from django.views import generic
 
@@ -33,10 +33,28 @@ class UpdateView(generic.UpdateView):
 
     def get_success_url(self):
         return reverse("clientes:detail", args=(self.object.id,))
+
+class EnderecoUpdateView(generic.UpdateView):
+    model = Endereco
+    form_class = EnderecoForm
+    template_name = "clientes/enderecos/form.html"
+
+    def get_success_url(self):
+        return reverse("clientes:detail", args=(self.object.cliente.id,))
+    
+class EquipamentoUpdateView(generic.UpdateView):
+    model = Equipamento
+    form_class = EquipamentoForm
+    template_name = "clientes/equipamentos/form.html"
+
+    def get_success_url(self):
+        return reverse("clientes:detail", args=(self.object.cliente.id,))
     
 
 def cliente_equipamento_form(request, cliente_id):
+    print('cliente id::::::', cliente_id)
     cliente = get_object_or_404(Cliente, pk=cliente_id)
+    print('Cliente encontrado::::::', cliente)
     if request.method == "POST":
         form = EquipamentoForm(request.POST, cliente=cliente)
         if form.is_valid():

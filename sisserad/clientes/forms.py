@@ -8,8 +8,7 @@ class EquipamentoForm(forms.ModelForm):
         model = Equipamento
         fields = ["nome", "fabricante", "modelo", "numero_serie", "ano_fabricacao", "parametros_variaveis", "endereco"]
     def __init__(self, *args, **kwargs):
-        cliente_id = kwargs.pop('cliente_id', None)
-        self.cliente = Cliente.objects.get(pk=cliente_id)
+        self.cliente = kwargs.pop('cliente', None)
         super(EquipamentoForm, self).__init__(*args, **kwargs)
         if self.cliente:
             self.fields['endereco'].queryset = self.cliente.endereco_set.all()
