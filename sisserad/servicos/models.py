@@ -14,6 +14,7 @@ class Servico(BaseModel):
     
     def __str__(self):
         return f'{self.cliente.nome}'
+
 class TipoAtividade(BaseModel):
     nome = models.CharField(max_length=50)
     link_form_base = models.URLField()
@@ -31,7 +32,7 @@ class Atividade(BaseModel):
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='AB')
     link_formulario = models.URLField()
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
-    
+    relatorio = models.URLField()
     def __str__(self):
         return f'{self.tipo_atividade.nome} - {self.equipamento.nome}'
     
