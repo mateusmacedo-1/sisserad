@@ -61,14 +61,27 @@ class ClienteViewTest(TestCase):
         self.assertContains(response, e.equipamento_set.all()[1].__str__())
         self.assertContains(response, e.equipamento_set.all()[2].__str__())
         
-    def test_clientes_form_view_erros(self):
+    def test_clientes_form_view_email_unico_mensagem_erro(self):
         """
-            O formulário deve exibir erros se os dados são inválidos.
+        O formulário deve exibir erros se os dados são inválidos.
         """
-        c = Cliente.objects.create(nome="Maria", documento="123555221", email="mateus@gmail.com", celular="999999999")
-        response = self.client.post(reverse("clientes:edit", 
-                                    args=(c.id,)), 
-                                    data={"nome": "Maria", "documento": "123555221", "email": "mateusgmail.com", "celular": "999999999"})
+        Cliente.objects.create(
+            nome="Maria",
+            documento="123555221",
+            email="mateus@gmail.com",
+            celular="999999999"
+        )
+        response = self.client.post(reverse("clientes:create"), 
+                                    data={
+                                        "nome": "Maria",
+                                        "documento": "123555221",
+                                        "email": "mateus@gmail.com",
+                                        "celular": "999999999"
+                                    },
+                                    follow=True)
+
+        self.assertContains(response, "Cliente com este Email já existe.")
+        self.assertContains(response, "Cliente com este Documento já existe.")
         
         
     
