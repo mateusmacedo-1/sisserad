@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'core.apps.CoreConfig',
     'clientes.apps.ClientesManagementConfig',
+    'servicos.apps.ServicosConfig',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,7 +138,6 @@ JAZZMIN_SETTINGS = {
     "site_title": f"{NOME_SISTEMA} admin",
     # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": f"{NOME_SISTEMA}",
-
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_brand": f"{NOME_SISTEMA}",
      "copyright": "Serad",

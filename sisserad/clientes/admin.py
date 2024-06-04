@@ -1,4 +1,6 @@
+from os import path
 from django.contrib import admin
+
 from .models import Cliente, Endereco, Equipamento
     
     
@@ -31,7 +33,5 @@ class ClienteAdmin(admin.ModelAdmin):
     list_display = ["nome", "documento","created_at"]
     list_filter = ["created_at"]
     search_fields = ["nome", "documento"]
-
-    
-    
+ 
 admin.site.register(Cliente, ClienteAdmin)
