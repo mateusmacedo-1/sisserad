@@ -52,9 +52,7 @@ class EquipamentoUpdateView(generic.UpdateView):
     
 
 def cliente_equipamento_form(request, cliente_id):
-    print('cliente id::::::', cliente_id)
     cliente = get_object_or_404(Cliente, pk=cliente_id)
-    print('Cliente encontrado::::::', cliente)
     if request.method == "POST":
         form = EquipamentoForm(request.POST, cliente=cliente)
         if form.is_valid():

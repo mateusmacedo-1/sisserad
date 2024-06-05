@@ -42,11 +42,11 @@
               {% if atividade.status == 'AB' %}
                 <span class="card-title-badge badge badge-warning"><i class="fas fa-clock"></i></span>
               {% elif atividade.status == 'FI' %}
-                <span class="card-title-badge  badge badge-success">{{ atividade.get_status_display }}</span>
+                <span class="card-title-badge  badge badge-success"><i class="fas fa-check"></i></span>
               {% elif atividade.status == 'RE' %}
-                <span class="card-title-badge  badge badge-info">{{ atividade.get_status_display }}</span>
+                <span class="card-title-badge  badge badge-info"><i class="fas fa-check-double"></i></span>
               {% elif atividade.status == 'PU' %}
-                <span class="card-title-badge  badge badge-primary">{{ atividade.get_status_display }}</span>
+                <span class="card-title-badge  badge badge-primary"><i class="fas fa-envelope"></i></span>
               {% endif %}
             </div>
 
@@ -76,9 +76,18 @@
               </div>
               <div class="actions-buttons">
                 {% if atividade.status == 'AB' %}
-                  <button class="btn btn-info">Executar</button>
-                  <button class="btn btn-danger">Cancelar</button>
+                  <button class="btn btn-success" onclick="executarAtividade('{{atividade.id}}')">Executar</button>
                 {% endif %}
+                {% if atividade.status == 'FI' %}
+                  <button class="btn btn-info" onclick="revisarAtividade('{{atividade.id}}')">Revisar</button>
+                {% endif %}
+                {% if atividade.status == 'RE' %}
+                  <button class="btn btn-primary" onclick="publicarAtividade('{{atividade.id}}')">Publicar</button>
+                {% endif %}
+                {% if atividade.status != 'AB' %}
+                  <button class="btn btn-warning" onclick="abrirAtividade('{{atividade.id}}')">Reabrir</button>
+                {% endif %}
+                <button class="btn btn-danger">Cancelar</button>
               </div>
             </div>
           </div>
@@ -170,4 +179,74 @@
       gap: .5em;
     }
   </style>
+  <script>
+    function executarAtividade(id) {
+      fetch(`/api/atividades/${id}/finalizar/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({})
+      })
+        .then(response => {
+          window.location.reload();
+          return response.json();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    function abrirAtividade(id){
+      fetch(`/api/atividades/${id}/abrir/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({})
+      })
+        .then(response => {
+          window.location.reload();
+          return response.json();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    function revisarAtividade(id){
+      fetch(`/api/atividades/${id}/revisar/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({})
+      })
+        .then(response => {
+          window.location.reload();
+          return response.json();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    function publicarAtividade(id){
+      fetch(`/api/atividades/${id}/publicar/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({})
+      })
+        .then(response => {
+          window.location.reload();
+          return response.json();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
 {% endblock %}

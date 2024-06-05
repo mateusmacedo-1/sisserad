@@ -17,10 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+
+from servicos import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='admin/')),
     path("clientes/", include("clientes.urls")),
     path('servicos/', include('servicos.urls', namespace='servicos')),
-    path("__debug__/", include("debug_toolbar.urls")),
+    path("api/atividades/<int:pk>/abrir/", views.AbrirAtividade.as_view(), name="abrir_atividade"),
+    path("api/atividades/<int:pk>/finalizar/", views.FinalizarAtividade.as_view(), name="finalizar_atividade"),
+    path("api/atividades/<int:pk>/revisar/", views.RevisarAtividade.as_view(), name="revisar_atividade"),
+    path("api/atividades/<int:pk>/publicar/", views.PublicarAtividade.as_view(), name="publicar_atividade"),
 ]
