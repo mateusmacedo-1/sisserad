@@ -1,0 +1,23 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Detalhes do Serviço</h1>
+  <table>
+    <tr>
+      <th>Cliente</th>
+      <td>{{ servico.cliente }}</td>
+    </tr>
+    <tr>
+      <th>Data de Solicitação</th>
+      <td>{{ servico.data_solicitacao }}</td>
+    </tr>
+    <tr>
+      <th>Previsão de Finalização</th>
+      <td>{{ servico.previsao_finalizacao }}</td>
+    </tr>
+    <tr>
+      <th>Vencimento</th>
+      <td>{{ servico.vencimento }}</td>
+    </tr>
+  </table>
+{% endblock %}

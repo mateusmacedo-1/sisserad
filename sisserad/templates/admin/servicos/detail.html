@@ -1,0 +1,173 @@
+{% extends "admin/change_form.html" %}
+
+{% block title %}
+    Detalhes do Serviço - {{ title }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">Início</a> /
+        <a href="{% url 'admin:servicos_servico_changelist' %}">Serviços</a> /
+        <span>{{ servico }}</span>
+    </div>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="service-details">
+      <h2>Ordem de Serviço</h2>
+      <div class="service-header">
+        <div class="service-info">
+          <p><strong>Cliente:</strong> {{ servico.cliente }}</p>
+          <p><strong>N° Documento:</strong> {{ servico.cliente.documento }}</p>
+          <p><strong>Contato:</strong> {{ servico.cliente.celular }}</p>
+        </div>
+        <div class="service-status">
+          <p><strong>Aberto por:</strong> {{ servico.aberto_por }}</p>
+          <p><strong>Solicitado por:</strong> {{ servico.solicitado_por }}</p>
+          <p><strong>Aberto em:</strong> {{ servico.created_at }}</p>
+          <p><strong>Previsão de término:</strong> {{ servico.previsao_finalizacao }}</p>
+        </div>
+      </div>
+
+      <div class="activities-section">
+        <h3>Atividades</h3>
+        <div class="activities-container">
+          {% for atividade in servico.atividade_set.all %}
+          <div class="card">
+            <div class="card-title">
+              <h5 class="card-title-text">
+                {{ atividade.tipo_atividade }} 
+              </h5>
+              {% if atividade.status == 'AB' %}
+                <span class="card-title-badge badge badge-warning"><i class="fas fa-clock"></i></span>
+              {% elif atividade.status == 'FI' %}
+                <span class="card-title-badge  badge badge-success">{{ atividade.get_status_display }}</span>
+              {% elif atividade.status == 'RE' %}
+                <span class="card-title-badge  badge badge-info">{{ atividade.get_status_display }}</span>
+              {% elif atividade.status == 'PU' %}
+                <span class="card-title-badge  badge badge-primary">{{ atividade.get_status_display }}</span>
+              {% endif %}
+            </div>
+
+            <div class="card-body">
+              <div class="card-data">
+                <div class="card-data-name"><strong>Responsável:</strong></div>
+                <div class="card-data-value">{{atividade.responsavel}}</div>
+              </div>
+              <div class="card-data">
+                <div class="card-data-name"><strong>Adicionada em:</strong></div>
+                <div class="card-data-value">{{ atividade.created_at }}</div>
+              </div>
+              <div class="card-data">
+                <div class="card-data-name"><strong>Previsão de término:</strong></div>
+                <div class="card-data-value">{{ atividade.previsao_finalizacao }}</div>
+              </div>
+              <div class="card-data">
+                <div class="card-data-name"><strong>Data de vencimento:</strong></div>
+                <div class="card-data-value">{{ atividade.vencimento }}</div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="info-buttons">
+                {% if atividade.status != 'AB' %}
+                  <button class="btn btn-primary">PDF</button>
+                {% endif %}
+              </div>
+              <div class="actions-buttons">
+                {% if atividade.status == 'AB' %}
+                  <button class="btn btn-info">Executar</button>
+                  <button class="btn btn-danger">Cancelar</button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .container {
+      margin: 20px;
+    }
+    .service-details {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .service-header {
+      display: flex;
+      justify-content: space-between;
+    }
+    .service-info, .service-status {
+      flex: 1;
+      margin-right: 20px;
+    }
+    .service-actions {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .activities-section {
+      margin-top: 20px;
+    }
+    .activities-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1em;
+      flex: 1 1 calc(33%);
+      box-sizing: border-box;
+    }
+    .card-body {
+      display: flex;
+      padding-left: 0.3em;
+      padding-top: 0.3em;
+      flex-wrap: wrap;
+      justify-content: start;
+    }
+    .card-title {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .card-title-badge{
+      padding: 0.5em;
+      border-radius: 5px;
+      width: 3em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-data {
+      display: flex;
+      flex-direction: column;
+      margin-right: 1em;
+      align-items: start;
+      justify-content: start;
+    }
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .info-buttons{
+      display: flex;
+      gap: .5em;
+    }
+
+    .actions-buttons{
+      display: flex;
+      gap: .5em;
+    }
+  </style>
+{% endblock %}
