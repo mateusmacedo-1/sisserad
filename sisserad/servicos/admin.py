@@ -17,10 +17,10 @@ class AtividadeInline(admin.StackedInline):
     fields = ['tipo_atividade', 'previsao_finalizacao', 'vencimento', 'responsavel']
 
 class ServicoAdmin(admin.ModelAdmin):
-    fields = ["cliente", "data_solicitação", "previsao_finalizacao", "vencimento", ]
+    fields = ["cliente", "data_solicitação", "previsao_finalizacao", "vencimento", "solicitado_por", "procurar_por"]
     inlines = [AtividadeInline]
-    list_display = ('detail_link', 'cliente', 'previsao_finalizacao', 'vencimento', 'data_solicitação', 'created_at', 'created_by', 'edit_link', 'delete_link')
-    list_filter = ["created_at", "created_by"]
+    list_display = ('detail_link', 'status', 'cliente', 'previsao_finalizacao', 'vencimento', 'data_solicitação', 'created_at', 'created_by', 'edit_link', 'delete_link')
+    list_filter = ["created_at", "created_by", "status"]
     search_fields = ["cliente", "vencimento"]
 
     def edit_link(self, obj):

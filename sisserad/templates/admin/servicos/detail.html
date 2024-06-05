@@ -21,10 +21,10 @@
           <p><strong>Cliente:</strong> {{ servico.cliente }}</p>
           <p><strong>N° Documento:</strong> {{ servico.cliente.documento }}</p>
           <p><strong>Contato:</strong> {{ servico.cliente.celular }}</p>
+          <p><strong>Aberto por:</strong> {{ servico.aberto_por }}</p>
         </div>
         <div class="service-status">
-          <p><strong>Aberto por:</strong> {{ servico.aberto_por }}</p>
-          <p><strong>Solicitado por:</strong> {{ servico.solicitado_por }}</p>
+          <p><strong>Procurar por:</strong> {% if servico.procurar_por %}{{ servico.procurar_por }}{% else %}-{% endif %}</p>
           <p><strong>Aberto em:</strong> {{ servico.created_at }}</p>
           <p><strong>Previsão de término:</strong> {{ servico.previsao_finalizacao }}</p>
         </div>
@@ -67,27 +67,39 @@
                 <div class="card-data-name"><strong>Data de vencimento:</strong></div>
                 <div class="card-data-value">{{ atividade.vencimento }}</div>
               </div>
+              <div class="card-data">
+                <div class="card-data-name"><strong>Revisado por:</strong></div>
+                <div class="card-data-value">
+                  {% if atividade.revisado_por and atividade.status == "RE" %}
+                    {{ atividade.revisado_por.first_name }}
+                  {% elif atividade.revisado_por and atividade.status == "PU" %}
+                    {{ atividade.revisado_por.first_name }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </div>
+              </div>
             </div>
             <div class="card-actions">
               <div class="info-buttons">
                 {% if atividade.status != 'AB' %}
-                  <button class="btn btn-primary">PDF</button>
+                  <button class="btn btn-primary"><i class="icon-button fas fa-download"></i>PDF</button>
                 {% endif %}
               </div>
               <div class="actions-buttons">
                 {% if atividade.status == 'AB' %}
-                  <button class="btn btn-success" onclick="executarAtividade('{{atividade.id}}')">Executar</button>
+                  <button class="btn btn-success" onclick="executarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-clipboard"></i>Executar</button>
                 {% endif %}
                 {% if atividade.status == 'FI' %}
-                  <button class="btn btn-info" onclick="revisarAtividade('{{atividade.id}}')">Revisar</button>
+                  <button class="btn btn-info" onclick="revisarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-eye"></i>Revisar</button>
                 {% endif %}
                 {% if atividade.status == 'RE' %}
-                  <button class="btn btn-primary" onclick="publicarAtividade('{{atividade.id}}')">Publicar</button>
+                  <button class="btn btn-primary" onclick="publicarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-paper-plane"></i>Publicar</button>
                 {% endif %}
                 {% if atividade.status != 'AB' %}
-                  <button class="btn btn-warning" onclick="abrirAtividade('{{atividade.id}}')">Reabrir</button>
+                  <button class="btn btn-warning" onclick="abrirAtividade('{{atividade.id}}')"><i class="icon-button fas fa-undo"></i>Reabrir</button>
                 {% endif %}
-                <button class="btn btn-danger">Cancelar</button>
+                <button class="btn btn-danger"><i class="icon-button fas fa-times"></i>Cancelar</button>
               </div>
             </div>
           </div>
@@ -98,6 +110,9 @@
   </div>
 
   <style>
+    .icon-button{
+      margin-right: 0.5em;
+    }
     .container {
       margin: 20px;
     }

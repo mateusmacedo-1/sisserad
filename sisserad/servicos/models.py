@@ -15,6 +15,8 @@ class Servico(BaseModel):
     previsao_finalizacao = models.DateField()
     vencimento = models.DateField()
     data_solicitação = models.DateField()
+    solicitado_por = models.CharField(max_length=50, null=True, blank=True)
+    procurar_por = models.CharField(max_length=50, null=True, blank=True)
     
     def __str__(self):
         return f'{self.cliente.nome}'
@@ -42,6 +44,7 @@ class Atividade(BaseModel):
     link_formulario = models.URLField()
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     relatorio = models.URLField()
+    revisado_por = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True, related_name='revisado_por')
     def __str__(self):
         return f'{self.tipo_atividade.nome}'
     

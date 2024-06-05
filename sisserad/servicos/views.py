@@ -45,6 +45,7 @@ class RevisarAtividade(APIView):
         if (atividade.status != 'FI'):
             return Response(status=status.HTTP_409_CONFLICT, data={'message': 'Atividade deve estar finalizada para ser revisada.'})
         atividade.status = 'RE'
+        atividade.revisado_por = request.user
         atividade.save()
         return Response(status=status.HTTP_200_OK)
 
