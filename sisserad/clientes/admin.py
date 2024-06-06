@@ -28,6 +28,7 @@ class ClienteAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {"fields": ["nome", "documento"]}),
         ("Contato", {"fields": ["email", "celular", "telefone_fixo"]}),
+        
     ]
     inlines = [EnderecoInline, EquipamentoInline]
     list_display = ["nome", "documento","created_at"]

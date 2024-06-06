@@ -39,15 +39,19 @@
               <h5 class="card-title-text">
                 {{ atividade.tipo_atividade }} 
               </h5>
-              {% if atividade.status == 'AB' %}
-                <span class="card-title-badge badge badge-warning"><i class="fas fa-clock"></i></span>
-              {% elif atividade.status == 'FI' %}
-                <span class="card-title-badge  badge badge-success"><i class="fas fa-check"></i></span>
-              {% elif atividade.status == 'RE' %}
-                <span class="card-title-badge  badge badge-info"><i class="fas fa-check-double"></i></span>
-              {% elif atividade.status == 'PU' %}
-                <span class="card-title-badge  badge badge-primary"><i class="fas fa-envelope"></i></span>
-              {% endif %}
+              <div class="d-flex">
+                
+                {% if atividade.status == 'AB' %}
+                  <span class="card-title-badge badge"><i class="fas fa-clock"></i></span>
+                {% elif atividade.status == 'FI' %}
+                  <span class="card-title-badge  badge"><i class="fas fa-check"></i></span>
+                {% elif atividade.status == 'RE' %}
+                  <span class="card-title-badge  badge"><i class="fas fa-check-double"></i></span>
+                {% elif atividade.status == 'PU' %}
+                  <span class="card-title-badge  badge"><i class="fas fa-envelope"></i></span>
+                {% endif %}
+              </div>
+
             </div>
 
             <div class="card-body">
@@ -82,13 +86,16 @@
             </div>
             <div class="card-actions">
               <div class="info-buttons">
+                {% if atividade.status == 'AB' or atividade.status == "FI" %}
+                  <button class="btn btn-primary" onclick="window.open('{{atividade.tipo_atividade.link_form_base}}', '_blank')"><i class="icon-button fas fa-clipboard"></i>Abrir planilha</button>
+                {% endif %}
                 {% if atividade.status != 'AB' %}
-                  <button class="btn btn-primary"><i class="icon-button fas fa-download"></i>PDF</button>
+                  <button class="btn btn-secondary" onclick="window.open('https://seradspr-my.sharepoint.com/:b:/g/personal/liliane_oliveira_serad_com_br/EUWVzeoyVIdOvWPSZn6vEXUBZuwvpMfolxKc1Zd1S5eoQw?e=LipYbh', '_blank')" ><i class="icon-button fas fa-download"></i>PDF</button>
                 {% endif %}
               </div>
               <div class="actions-buttons">
                 {% if atividade.status == 'AB' %}
-                  <button class="btn btn-success" onclick="executarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-clipboard"></i>Executar</button>
+                  <button class="btn btn-success" onclick="executarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-play"></i>Executar</button>
                 {% endif %}
                 {% if atividade.status == 'FI' %}
                   <button class="btn btn-info" onclick="revisarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-eye"></i>Revisar</button>
@@ -98,6 +105,9 @@
                 {% endif %}
                 {% if atividade.status != 'AB' %}
                   <button class="btn btn-warning" onclick="abrirAtividade('{{atividade.id}}')"><i class="icon-button fas fa-undo"></i>Reabrir</button>
+                {% endif %}
+                {% if atividade.status == 'PU'%}
+                  <button class="btn btn-info"><i class="icon-button fas fa-redo"></i>Gerar Retorno</button>
                 {% endif %}
                 <button class="btn btn-danger"><i class="icon-button fas fa-times"></i>Cancelar</button>
               </div>
