@@ -1,7 +1,7 @@
 from django.db import models
 
 from core.models import BaseModel
-from .sisserad import settings
+from sisserad import settings
 
 class Servico(BaseModel):
     STATUS_CHOICES = [
@@ -45,8 +45,18 @@ class Atividade(BaseModel):
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     relatorio = models.URLField()
     revisado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True, related_name='revisado_por')
+    
     def __str__(self):
         return f'{self.tipo_atividade.nome}'
+
+    class Meta:
+        permissions = (('pode_revisar', 'Pode revisar uma atividade'),
+                        ('pode_publicar', 'Pode publicar uma atividade'),
+                        ('pode_visualizar_planilha', 'Permite visualizar a planilha de atividades.'),
+                        ('pode_visualizar_laudo', 'Permite visualizar o laudo da atividades.'),
+                        ('pode_cancelar_atividade', 'Permite cancelar a atividade.'),
+                        ('pode_gerar_retorno', 'Permite gerar atividade de retorno.'),
+                    )
     
 
 

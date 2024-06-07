@@ -9,6 +9,10 @@ from rest_framework import status, permissions
 class DetailView(generic.DetailView):
     model = Servico
     template_name = "servicos/detail.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
     
 class AbrirAtividade(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -26,7 +30,7 @@ class FinalizarAtividade(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def post(self, request, pk):
         try:
-            atividade = Atividade.objects.get(pk=pk)
+            atividade = Atividade.objects.filter(responsavel=request.user).get(pk=pk)
         except Atividade.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         if (atividade.status != 'AB'):

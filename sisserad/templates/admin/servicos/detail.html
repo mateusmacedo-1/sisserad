@@ -87,29 +87,71 @@
             <div class="card-actions">
               <div class="info-buttons">
                 {% if atividade.status == 'AB' or atividade.status == "FI" %}
-                  <button class="btn btn-primary" onclick="window.open('{{atividade.tipo_atividade.link_form_base}}', '_blank')"><i class="icon-button fas fa-clipboard"></i>Abrir planilha</button>
+                  <button 
+                  class="btn btn-primary" 
+                  onclick="window.open('{{atividade.tipo_atividade.link_form_base}}', '_blank')"
+                  {% if user != atividade.responsavel and not perms.servicos.pode_visualizar_planilha %}
+                    disabled
+                    title="Somente o responsável pela atividade ou o responsável técnico podem visualizar diretamente os resultados das medidas."
+                  {% endif %}
+                  ><i class="icon-button fas fa-clipboard"></i>Abrir planilha</button>
                 {% endif %}
                 {% if atividade.status != 'AB' %}
                   <button class="btn btn-secondary" onclick="window.open('https://seradspr-my.sharepoint.com/:b:/g/personal/liliane_oliveira_serad_com_br/EUWVzeoyVIdOvWPSZn6vEXUBZuwvpMfolxKc1Zd1S5eoQw?e=LipYbh', '_blank')" ><i class="icon-button fas fa-download"></i>PDF</button>
                 {% endif %}
               </div>
               <div class="actions-buttons">
+
                 {% if atividade.status == 'AB' %}
-                  <button class="btn btn-success" onclick="executarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-play"></i>Executar</button>
+                  <button 
+                  class="btn btn-success" 
+                  onclick="executarAtividade('{{atividade.id}}')"
+                  {% if user != atividade.responsavel %}
+                    disabled
+                    title="Você não é o responsável por essa atividade"
+                  {% endif %}>
+
+                  <i class="icon-button fas fa-play"></i>Executar
+                </button>
                 {% endif %}
                 {% if atividade.status == 'FI' %}
-                  <button class="btn btn-info" onclick="revisarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-eye"></i>Revisar</button>
+                  <button 
+                  class="btn btn-info" 
+                  onclick="revisarAtividade('{{atividade.id}}')"
+                  {% if not perms.servicos.pode_revisar %}
+                    disabled
+                    title="Somente o responsável técnico pode revisar uma atividade."
+                  {% endif %}>
+                  <i class="icon-button fas fa-eye"></i>Revisar</button>
                 {% endif %}
                 {% if atividade.status == 'RE' %}
-                  <button class="btn btn-primary" onclick="publicarAtividade('{{atividade.id}}')"><i class="icon-button fas fa-paper-plane"></i>Publicar</button>
+                  <button 
+                  class="btn btn-primary" 
+                  onclick="publicarAtividade('{{atividade.id}}')"
+                    {% if not perms.servicos.pode_publicar %}
+                      disabled
+                      title="Seu usuário não tem permissões para publicar uma atividade."
+                    {% endif %}
+                  ><i class="icon-button fas fa-paper-plane"></i>Publicar</button>
                 {% endif %}
                 {% if atividade.status != 'AB' %}
                   <button class="btn btn-warning" onclick="abrirAtividade('{{atividade.id}}')"><i class="icon-button fas fa-undo"></i>Reabrir</button>
                 {% endif %}
                 {% if atividade.status == 'PU'%}
-                  <button class="btn btn-info"><i class="icon-button fas fa-redo"></i>Gerar Retorno</button>
+                  <button class="btn btn-info"
+                          {% if not perms.servicos.pode_gerar_retorno %}
+                            disabled
+                            title="Somente a secretaria pode gerar um retorno"
+                          {% endif %}
+                  ><i class="icon-button fas fa-redo"></i>Gerar Retorno</button>
                 {% endif %}
-                <button class="btn btn-danger"><i class="icon-button fas fa-times"></i>Cancelar</button>
+                <button 
+                class="btn btn-danger"
+                {% if not perms.servicos.pode_cancelar_atividade %}
+                  disabled
+                  title="Somente a secretaria pode cancelar uma atividade"
+                {% endif %}
+                ><i class="icon-button fas fa-times"></i>Cancelar</button>
               </div>
             </div>
           </div>
