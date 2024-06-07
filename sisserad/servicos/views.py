@@ -1,4 +1,5 @@
 from django.views import generic
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from servicos.models import Atividade, Servico
 
@@ -14,8 +15,8 @@ class DetailView(generic.DetailView):
         context['user'] = self.request.user
         return context
     
-class AbrirAtividade(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class AbrirAtividade(PermissionRequiredMixin, APIView):
+    permission_required = 'servicos.pode_abrir'
     def post(self, request, pk):
         try:
             atividade = Atividade.objects.get(pk=pk)
@@ -26,6 +27,7 @@ class AbrirAtividade(APIView):
         atividade.status = 'AB'
         atividade.save()
         return Response(status=status.HTTP_200_OK)
+
 class FinalizarAtividade(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def post(self, request, pk):
@@ -39,8 +41,8 @@ class FinalizarAtividade(APIView):
         atividade.save()
         return Response(status=status.HTTP_200_OK)
 
-class RevisarAtividade(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class RevisarAtividade(PermissionRequiredMixin, APIView):
+    permission_required = 'servicos.pode_revisar'
     def post(self, request, pk):
         try:
             atividade = Atividade.objects.get(pk=pk)
@@ -54,7 +56,7 @@ class RevisarAtividade(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class PublicarAtividade(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_required = 'servicos.pode_publicar'
     def post(self, request, pk):
         try:
             atividade = Atividade.objects.get(pk=pk)

@@ -56,6 +56,7 @@ class Atividade(BaseModel):
                         ('pode_visualizar_laudo', 'Permite visualizar o laudo da atividades.'),
                         ('pode_cancelar_atividade', 'Permite cancelar a atividade.'),
                         ('pode_gerar_retorno', 'Permite gerar atividade de retorno.'),
+                        ('pode_abrir', 'Permite abrir uma atividade.')
                     )
     
 
