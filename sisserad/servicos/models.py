@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 from core.models import BaseModel
+from .sisserad import settings
 
 class Servico(BaseModel):
     STATUS_CHOICES = [
@@ -39,12 +39,12 @@ class Atividade(BaseModel):
     equipamento = models.ForeignKey('clientes.Equipamento', on_delete=models.DO_NOTHING, null=True, blank=True)
     previsao_finalizacao = models.DateField()
     vencimento = models.DateField()
-    responsavel = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    responsavel = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='AB')
     link_formulario = models.URLField()
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     relatorio = models.URLField()
-    revisado_por = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True, related_name='revisado_por')
+    revisado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True, related_name='revisado_por')
     def __str__(self):
         return f'{self.tipo_atividade.nome}'
     

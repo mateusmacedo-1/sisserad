@@ -14,7 +14,7 @@ class Cliente(BaseModel):
         return f'{self.nome.capitalize()}(Documento: {self.documento})'
 
 class Equipamento(BaseModel):
-    id = models.AutoField(primary_key=True, editable=False, unique=True)
+    id = models.AutoField(primary_key=True, editable=False, unique=True, help_text="Identificador único do equipamento")
     nome = models.CharField(max_length=255)
     fabricante = models.CharField(max_length=50)
     modelo = models.CharField(max_length=50)
