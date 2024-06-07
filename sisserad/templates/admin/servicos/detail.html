@@ -135,7 +135,13 @@
                   ><i class="icon-button fas fa-paper-plane"></i>Publicar</button>
                 {% endif %}
                 {% if atividade.status != 'AB' %}
-                  <button class="btn btn-warning" onclick="abrirAtividade('{{atividade.id}}')"><i class="icon-button fas fa-undo"></i>Reabrir</button>
+                  <button class="btn btn-warning" 
+                  onclick="abrirAtividade('{{atividade.id}}')"
+                  {% if not perms.servicos.pode_abrir %}
+                    disabled
+                    title="Seu usuário não tem permissões para publicar uma atividade."
+                  {% endif %}
+                  ><i class="icon-button fas fa-undo"></i>Reabrir</button>
                 {% endif %}
                 {% if atividade.status == 'PU'%}
                   <button class="btn btn-info"
